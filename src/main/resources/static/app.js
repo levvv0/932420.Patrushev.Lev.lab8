@@ -17,7 +17,12 @@ const statusNames = {
 };
 
 async function request(url, options = {}) {
-  const response = await fetch(url, options);
+  let response;
+  try {
+    response = await fetch(url, options);
+  } catch (error) {
+    throw new Error("Нет связи с сервером. Для работы с оборудованием нужно подключение");
+  }
   if (response.status === 204) return null;
 
   const data = await response.json();
