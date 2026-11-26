@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Учёт оборудования лаборатории</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="page-width">
+      <p class="eyebrow">Лаборатория · учёт оборудования</p>
+      <h1>Оборудование под контролем</h1>
+      <p>Добавляйте приборы, оформляйте выдачу и отслеживайте возврат.</p>
+      <nav aria-label="Разделы страницы">
+        <a href="#equipment">Оборудование</a>
+        <a href="#loans">Активные выдачи</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-width">
+    <p id="notice" class="notice" role="status" aria-live="polite"></p>
+    <noscript><p>Для управления оборудованием включите JavaScript в браузере.</p></noscript>
+
+    <section id="equipment" aria-labelledby="equipment-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Инвентарь</p>
+          <h2 id="equipment-heading">Оборудование</h2>
+        </div>
+        <button type="button" id="add-equipment" class="primary">Добавить прибор</button>
+      </div>
+
+      <div class="filters" role="group" aria-label="Фильтры оборудования">
+        <div>
+          <label for="type-filter">Тип</label>
+          <select id="type-filter"><option value="">Все типы</option></select>
+        </div>
+        <div>
+          <label for="status-filter">Статус</label>
+          <select id="status-filter">
+            <option value="">Все статусы</option>
+            <option value="available">Доступно</option>
+            <option value="in_use">В использовании</option>
+            <option value="maintenance">На обслуживании</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption>Список оборудования лаборатории</caption>
+          <thead><tr><th scope="col">Название</th><th scope="col">Тип</th><th scope="col">Серийный номер</th><th scope="col">Статус</th><th scope="col">Действия</th></tr></thead>
+          <tbody id="equipment-rows"></tbody>
+        </table>
+      </div>
+      <p id="equipment-empty" class="empty" hidden>По выбранным фильтрам ничего не найдено.</p>
+    </section>
+
+    <section id="loans" aria-labelledby="loans-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Выдача и возврат</p>
+          <h2 id="loans-heading">Активные выдачи</h2>
+        </div>
+        <p id="loan-count" class="count"></p>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <caption>Оборудование, которое ещё не вернули</caption>
+          <thead><tr><th scope="col">Оборудование</th><th scope="col">Получатель</th><th scope="col">Дата выдачи</th><th scope="col">Действие</th></tr></thead>
+          <tbody id="loan-rows"></tbody>
+        </table>
+      </div>
+      <p id="loans-empty" class="empty" hidden>Активных выдач нет.</p>
+    </section>
+  </main>
+
+  <dialog id="equipment-dialog" aria-labelledby="equipment-dialog-title">
+    <form id="equipment-form">
+      <h2 id="equipment-dialog-title">Добавить оборудование</h2>
+      <input type="hidden" id="equipment-id">
+      <label for="equipment-name">Название</label>
+      <input id="equipment-name" name="name" type="text" required maxlength="120">
+      <label for="equipment-type">Тип</label>
+      <input id="equipment-type" name="type" type="text" required maxlength="80">
+      <label for="equipment-serial">Серийный номер</label>
+      <input id="equipment-serial" name="serial_number" type="text" required maxlength="80">
+      <label for="equipment-status">Статус</label>
+      <select id="equipment-status" name="status">
+        <option value="available">Доступно</option>
+        <option value="maintenance">На обслуживании</option>
+        <option value="in_use" hidden>В использовании</option>
+      </select>
+      <p id="equipment-error" class="form-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" class="secondary" data-close="equipment-dialog">Отмена</button>
+        <button type="submit" class="primary">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="loan-dialog" aria-labelledby="loan-dialog-title">
+    <form id="loan-form">
+      <h2 id="loan-dialog-title">Оформить выдачу</h2>
+      <p id="loan-equipment-name"></p>
+      <input type="hidden" id="loan-equipment-id">
+      <label for="borrower">Получатель</label>
+      <input id="borrower" name="borrower" type="text" required maxlength="120">
+      <p id="loan-error" class="form-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" class="secondary" data-close="loan-dialog">Отмена</button>
+        <button type="submit" class="primary">Выдать</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer class="page-width">Лабораторная работа №8 · Учёт оборудования</footer>
+</body>
+</html>

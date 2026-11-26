@@ -1,0 +1,38 @@
+@base = http://localhost:8080
+@equipmentId = 1
+@loanId = 1
+
+### Добавить оборудование
+POST {{base}}/api/equipment
+Content-Type: application/json
+
+{"name":"Осциллограф","type":"Измерительный прибор","serial_number":"OSC-1001","status":"available"}
+
+### Просмотр оборудования с фильтрами
+GET {{base}}/api/equipment?type=Измерительный%20прибор&status=available
+
+### Просмотр одного прибора
+GET {{base}}/api/equipment/{{equipmentId}}
+
+### Изменить прибор
+PUT {{base}}/api/equipment/{{equipmentId}}
+Content-Type: application/json
+
+{"name":"Осциллограф цифровой","type":"Измерительный прибор","serial_number":"OSC-1001","status":"available"}
+
+### Выдать прибор (подставьте полученный equipmentId)
+POST {{base}}/api/loans
+Content-Type: application/json
+
+{"equipment_id":{{equipmentId}},"borrower":"Иван Петров"}
+
+### Повторите предыдущий POST: ожидается 409 Conflict
+
+### Только активные выдачи
+GET {{base}}/api/loans?active=true
+
+### Вернуть прибор (подставьте полученный loanId)
+PUT {{base}}/api/loans/{{loanId}}/return
+
+### Удалить прибор после возврата
+DELETE {{base}}/api/equipment/{{equipmentId}}
